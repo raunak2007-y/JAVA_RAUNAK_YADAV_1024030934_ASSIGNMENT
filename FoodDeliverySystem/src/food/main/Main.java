@@ -3,7 +3,7 @@ package food.main;
 import food.model.FoodOrder;
 import food.model.RegularOrder;
 import food.model.PremiumOrder;
-import food.utility.OrderUtility;
+import food.service.OrderService;
 
 public class Main {
 
@@ -11,10 +11,8 @@ public class Main {
 
         FoodOrder.setRestaurantName("Food Express");
 
-        // Array of FoodOrder
         FoodOrder[] orders = new FoodOrder[6];
 
-        // Six orders
         orders[0] = new RegularOrder(101, "Aman", 500);
         orders[1] = new PremiumOrder(102, "Simran", 1000);
         orders[2] = new RegularOrder(103, "Rahul", 750);
@@ -27,27 +25,16 @@ public class Main {
         System.out.println("             FOOD ORDERS");
         System.out.println("======================================");
 
-        // Display all orders
-        for (FoodOrder order : orders) {
+        OrderService service = new OrderService();
 
-            if (!OrderUtility.validateCustomerName(
-                    order.getCustomerName())) {
+        // Process all orders
+        service.processAllOrders(orders);
 
-                System.out.println("Invalid customer name");
-                continue;
-            }
+        // Display total revenue
+        System.out.println("Total Revenue : Rs. "
+                + service.getTotalRevenue(orders));
 
-            if (!OrderUtility.validateAmount(
-                    order.getAmount())) {
-
-                System.out.println("Invalid amount");
-                continue;
-            }
-
-            OrderUtility.generateOrderSummary(order);
-        }
-
-        // Display total orders
+        // Display total number of orders
         FoodOrder.displayTotalOrders();
     }
 }
